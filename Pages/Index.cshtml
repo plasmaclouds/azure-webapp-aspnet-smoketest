@@ -8,11 +8,41 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>This is my first Azure Web App.</p>
+    <p>plasmaclouds cheap smoke test service - 8 threads</p>
 
     <p>Would you like a random number? Here you are!</p>
     <p><strong>@Model.RandomNumber</strong></p> <!-- Display the random number -->
 
-    <p>Computation Result: <strong>@Model.ComputationResult</strong></p> <!-- display the computation result -->
+    <p>Computation Results:</p>
+    <ul>
+        @foreach (var result in Model.ComputationResults)
+        {
+            <li><strong>@result</strong> </li> 
+        }
+        <!-- Display each computation result -->
+    </ul>
 
 </div>
+
+
+@section Scripts {
+    <script>
+        // Function to simulate checking if the computations are done
+        function checkComputationStatus() {
+            var resultsDiv = document.getElementById("results");
+            var loadingDiv = document.getElementById("loading");
+
+            // Assume the computations are done if there are results (this check can be more sophisticated)
+            if (@Model.ComputationResults.Count > 0) {
+                loadingDiv.style.display = "none"; // Hide the loading message
+                resultsDiv.style.display = "block"; // Show the results
+            } else {
+                setTimeout(checkComputationStatus, 100) // Check again after a short delay
+            }
+        }
+
+        window.onload = checkComputationStatus
+    </script>
+
+
+}
